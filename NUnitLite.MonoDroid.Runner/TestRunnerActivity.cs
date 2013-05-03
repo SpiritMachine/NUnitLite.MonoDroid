@@ -58,7 +58,9 @@ namespace NUnitLite.MonoDroid
                     try
                     {
                         var assembly = testAssemblyEnumerator.Current;
-                        testRunner.Run(assembly);
+                        ShowDialog("Started Running Tests in " + assembly.GetName());
+						testRunner.Run(assembly);
+						ShowDialog("Finished Running Tests in " + assembly.GetName());
                     }
                     catch (Exception ex)
                     {
@@ -102,16 +104,30 @@ namespace NUnitLite.MonoDroid
         /// <param name="exception"></param>
         private void ShowErrorDialog(Exception exception)
         {
-            RunOnUiThread(() =>
-            {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.SetTitle("Failed to execute unit-test suite");
-                builder.SetMessage(exception.ToString());
-
-                var dialog = builder.Create();
-
-                dialog.Show();
-            });
+            ShowDialog(exception.ToString(), "Failed to execute unit-test suite");
         }
+
+		private void ShowDialog(string text)
+		{
+			ShowDialog(text, string.Empty);
+		}
+
+		/// <summary>
+		///  Show any Dialog
+		/// </summary>
+		/// <param name="dialogText">text</param>
+		/// <param name="heading"></param>
+		private void ShowDialog(string dialogText, string heading)
+		{
+			RunOnUiThread(() =>
+			{
+				var builder = new AlertDialog.Builder(this);
+				builder.SetTitle(heading);
+				builder.SetMessage(dialogText);
+				var dialog = builder.Create();
+				dialog.Show();
+			});
+			System.Diagnostics.Debug.WriteLine(dialogText);
+		}
     }
 }

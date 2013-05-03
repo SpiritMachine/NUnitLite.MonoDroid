@@ -57,8 +57,18 @@ namespace NUnitLite.MonoDroid
                 RightMargin = 40
             };
 
-            descriptionTextView.Text = testRunDetails.TestResult.Message + 
-                "\r\n\r\n" + testRunDetails.TestResult.StackTrace;
+           if (testRunDetails.Running)
+    		{
+				descriptionTextView.Text = "Test is currently running.";
+			}
+			else if (testRunDetails.Passed)
+			{
+				descriptionTextView.Text = "wohhoo, Test has passed.";
+			}
+			else if (testRunDetails.TestResult != null)
+			{
+				descriptionTextView.Text = testRunDetails.TestResult.Message + "\r\n\r\n" + testRunDetails.TestResult.StackTrace;	
+			}
 
             ScrollView scrollView = new ScrollView(this);
             scrollView.LayoutParameters = new LinearLayout.LayoutParams(
