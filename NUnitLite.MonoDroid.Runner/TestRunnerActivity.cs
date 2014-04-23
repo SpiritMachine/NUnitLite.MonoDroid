@@ -21,7 +21,6 @@ namespace NUnitLite.MonoDroid
         /// <summary>
         /// Handles the creation of the activity
         /// </summary>
-        /// <param name="savedInstanceState"></param>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -68,10 +67,6 @@ namespace NUnitLite.MonoDroid
         /// <summary>
         /// Handles list item click
         /// </summary>
-        /// <param name="l"></param>
-        /// <param name="v"></param>
-        /// <param name="position"></param>
-        /// <param name="id"></param>
         protected override void OnListItemClick(ListView l, View v, int position, long id)
         {
             var testRunItem = TestRunContext.Current.TestResults[position];
@@ -102,19 +97,13 @@ namespace NUnitLite.MonoDroid
         /// <summary>
         /// Displays an error dialog in case a test run fails
         /// </summary>
-        /// <param name="exception"></param>
         private void ShowErrorDialog(Exception exception)
         {
-            RunOnUiThread(() =>
-            {
-                var builder = new AlertDialog.Builder(this);
-                builder.SetTitle("Failed to execute unit-test suite");
-                builder.SetMessage(exception.ToString());
-
-                var dialog = builder.Create();
-
-                dialog.Show();
-            });
+            RunOnUiThread(() => new AlertDialog.Builder(this)
+                .SetTitle("Failed to execute unit-test suite")
+                .SetMessage(exception.ToString())
+                .Create()
+                .Show());
         }
     }
 }
